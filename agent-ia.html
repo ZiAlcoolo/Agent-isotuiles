@@ -4,26 +4,48 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Assistant ISOTUILES v1.0</title>
+    <title>Assistant ISOTUILES v1.1</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <style>
+        :root {
+            --gradient-background: linear-gradient(90deg, rgba(1, 46, 90, 1) 13%, rgba(1, 134, 196, 1) 86%);
+            --primary-color: #002F5C;
+        }
+
         body {
             font-family: 'Inter', sans-serif;
             background: linear-gradient(90deg, rgba(1, 46, 90, 1) 13%, rgba(1, 134, 196, 1) 86%);
             color: #fff;
             display: flex;
+            flex-direction: column;
             justify-content: center;
-            align-items: center;
-            height: 100vh;
+            align-items: stretch;
+            min-height: 100vh;
             margin: 0;
+            padding: 0 1.5rem;
+            gap: .5rem;
+        }
+
+        .btn{
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .btn:hover {
+            background: #014a91;
         }
 
         .chat-container {
-            width: 90%;
+            /* width: 90%; */
             max-width: 800px;
-            height: 80vh;
+            min-height: 80vh;
             background: #fff;
             color: #000;
             border-radius: 16px;
@@ -46,6 +68,7 @@
             flex: 1;
             padding: 20px;
             overflow-y: auto;
+            position: relative;
         }
 
         .message {
@@ -86,6 +109,58 @@
         .chat-input button:hover {
             opacity: 0.9;
         }
+
+
+ 
+
+
+        /* INDICATEUR DE FRAPPE */
+        #typing-indicator {
+            font-style: italic;
+            color: gray;
+            margin: 5px 0;
+            animation: blink 1s infinite;
+        }
+
+        @keyframes blink {
+
+            0%,
+            100% {
+                opacity: 0.3;
+            }
+
+            50% {
+                opacity: 1;
+            }
+        }
+
+        /* QWICK QST */
+        #quick-questions {
+            position: absolute;
+            bottom: 20px;
+            right: 20px;
+            left: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            box-sizing: border-box;
+        }
+
+        .quick-btn {
+            background: white;
+            border: 1px solid var(--primary-color);
+            color: var(--primary-color);
+            border-radius: 20px;
+            padding: 8px 14px;
+            cursor: pointer;
+            transition: 0.3s;
+            color: var(--primary-color);
+        }
+
+        .quick-btn:hover {
+            background: var(--primary-color);
+            color: white;
+        }
     </style>
 </head>
 
@@ -96,23 +171,49 @@
             <div class="message bot-message">Bonjour, je suis l’assistant ISOTUILES. Je peux vous renseigner sur nos
                 panneaux imitation tuiles et vous aider à créer un devis sur mesure. Comment puis-je vous aider
                 aujourd’hui ?</div>
+            <div id="typing-indicator" style="display:none;">Agent Isotuiles écrit...</div>
+            <div id="quick-questions">
+                <button class="quick-btn">Quels modèles proposez-vous ?</button>
+                <button class="quick-btn">Quels sont vos délais de livraison ?</button>
+                <button class="quick-btn">Peut-on poser soi-même les panneaux ?</button>
+            </div>
         </div>
         <div class="chat-input">
             <input type="text" id="user-input" placeholder="Écrivez votre message...">
             <button id="send-btn">Envoyer</button>
         </div>
     </div>
+    <div id="product-suggestions"></div>
+
+
+
+
+    <button id="download-chat" class="btn">💾 Sauvegarder la conversation</button>
+
+    <div id="form-area"></div>
+
+    <button class="btn" id="download-devis" onclick="generateDevis()">📄 Télécharger le devis</button>
+
 
     <script>
 
         // Fonction effet de frappe
-        function typeText(element, text, speed = 25) {
+        function typeWriterEffect(element, text, callback) {
             let i = 0;
-            const interval = setInterval(() => {
-                element.html(marked.parse(text.substring(0, i++)));
-                if (i > text.length) clearInterval(interval);
-            }, speed);
+            function type() {
+                if (i < text.length) {
+                    element.innerHTML += text.charAt(i);
+                    i++;
+                    const delay = 20 + Math.random() * 40; // vitesse de frappe aléatoire
+                    setTimeout(type, delay);
+                } else if (callback) {
+                    callback();
+                }
+            }
+            type();
         }
+
+
 
         function appendMessage(content, sender = 'bot') {
             const msgClass = sender === 'user' ? 'user-message' : 'bot-message';
@@ -120,14 +221,21 @@
             $('#chat-box').append(msgElement);
 
             if (sender === 'bot') {
-                typeText(msgElement, content);
-            } else {
-                // Sécurisation des entrées utilisateur
-                msgElement.text(content);
+                $("#typing-indicator").show();
+                setTimeout(() => {
+                    typeWriterEffect(msgElement[0], content, () => {
+                        $("#typing-indicator").hide();
+                        $('#chat-box').scrollTop($('#chat-box')[0].scrollHeight);
+                    });
+                }, 500 + Math.random() * 500); // petite latence avant la frappe
             }
-
-            $('#chat-box').scrollTop($('#chat-box')[0].scrollHeight);
+            else {
+                // Sécurisation des entrées utilisateur (aucun HTML injecté)
+                msgElement.text(content);
+                $('#chat-box').scrollTop($('#chat-box')[0].scrollHeight);
+            }
         }
+
 
         async function sendToOpenAI(message) {
             const systemPrompt = `Tu es ISOTUILES, un assistant commercial professionnel spécialisé dans la vente de panneaux sandwich isolants imitation tuiles. Ton ton est avenant, clair et efficace. Tu poses les bonnes questions pour accompagner le client jusqu’à la génération d’un devis (dimensions, modèle, couleur, épaisseur, charpente, accessoires, coordonnées). Lorsque tu as toutes les informations, tu annonces que le devis peut être transmis à isotuiles@gmail.com.`;
@@ -137,7 +245,7 @@
                     { role: "user", content: message }
                 ]
             };
-
+            $("#typing-indicator").show();
             const res = await fetch("https://agent-isotuiles.vercel.app/api/openai", {
                 method: "POST",
                 headers: {
@@ -152,6 +260,7 @@
                 const err = await res.json().catch(() => ({ error: res.statusText }));
                 throw new Error(err?.message || `HTTP ${res.status}`);
             }
+            $("#typing-indicator").hide();
 
             const data = await res.json();
             // Le format dépend de la version du SDK :
@@ -175,6 +284,81 @@
         $('#user-input').keypress(function (e) {
             if (e.which === 13) $('#send-btn').click();
         });
+
+        $(".quick-btn").on("click", function () {
+            const question = $(this).text();
+            sendMessage(question);
+        });
+
+
+
+
+        function downloadChat() {
+            const text = conversation.map(m => `${m.role === 'user' ? 'Client' : 'Isotuiles'}: ${m.content}`).join("\n\n");
+            const blob = new Blob([text], { type: "text/plain" });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement("a");
+            a.href = url;
+            a.download = "conversation-isotuiles.txt";
+            a.click();
+        }
+
+
+        let clientData = {
+            modele: null,
+            longueur: null,
+            largeur: null,
+            couleur: null,
+            accessoires: []
+        };
+
+        function processAIResponse(message) {
+            if (message.includes("modèle")) askFor("modele");
+            else if (message.includes("longueur")) askFor("longueur");
+            else if (message.includes("largeur")) askFor("largeur");
+            else if (message.includes("couleur")) askFor("couleur");
+            else if (message.includes("accessoires")) askFor("accessoires");
+        }
+
+        function askFor(field) {
+            // Afficher le champ dynamique
+            $("#form-area").html(`<input id="input-${field}" placeholder="Votre ${field}" />`);
+        }
+
+        function generateDevis() {
+            const text = `
+Devis Isotuiles
+----------------
+Modèle : ${clientData.modele}
+Dimensions : ${clientData.longueur} x ${clientData.largeur}
+Couleur : ${clientData.couleur}
+Accessoires : ${clientData.accessoires.join(", ")}
+----------------
+Contactez un commercial à isotuiles@gmail.com
+  `;
+            const blob = new Blob([text], { type: "text/plain" });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement("a");
+            a.href = url;
+            a.download = "devis-isotuiles.txt";
+            a.click();
+        }
+
+
+        function detectProducts(reply) {
+            const products = [];
+            if (reply.includes("Romane Canal")) products.push({ name: "Romane Canal", url: "https://isotuiles.fr/romane-canal" });
+            if (reply.includes("Tuiles Plates")) products.push({ name: "Tuiles Plates", url: "https://isotuiles.fr/tuiles-plates" });
+            if (reply.includes("Bac Acier")) products.push({ name: "Bac Acier", url: "https://isotuiles.fr/bac-acier" });
+
+            if (products.length) {
+                $("#product-suggestions").html(
+                    products.map(p => `<div><a href="${p.url}" target="_blank">${p.name}</a></div>`).join("")
+                );
+            }
+        }
+
+
     </script>
 </body>
 
