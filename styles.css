@@ -150,6 +150,7 @@
             box-sizing: border-box;
             background: var(--gradient-background);
             border-radius: 20px;
+            padding: 10px;
         }
 
         #quick-questions #slideToggleBtn svg {
