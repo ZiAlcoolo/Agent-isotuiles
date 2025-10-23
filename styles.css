@@ -1,0 +1,272 @@
+:root {
+            --gradient-background: linear-gradient(90deg, rgba(1, 46, 90, 1) 13%, rgba(1, 134, 196, 1) 86%);
+            --primary-color: #002F5C;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(90deg, rgba(1, 46, 90, 1) 13%, rgba(1, 134, 196, 1) 86%);
+            color: #fff;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: stretch;
+            min-height: 100vh;
+            margin: 0;
+            padding: 1.5rem;
+            gap: .5rem;
+        }
+
+        .btn {
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .btn:hover {
+            background: #014a91;
+        }
+
+        .chat-container {
+            /* width: 90%; */
+            max-width: 800px;
+            height: 80vh;
+            overflow-y: auto;
+            background: #fff;
+            color: #000;
+            border-radius: 16px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .chat-header {
+            background: #002F5C;
+            color: white;
+            text-align: center;
+            padding: 15px;
+            font-size: 1.2em;
+            font-weight: 600;
+        }
+
+        .chat-box {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+            position: relative;
+        }
+
+        .message {
+            margin-bottom: 12px;
+            line-height: 1.4;
+        }
+
+        .bot-message {
+            color: #002F5C;
+            font-weight: 500;
+        }
+
+        .user-message {
+            text-align: right;
+            color: #000;
+            width: fit-content;
+            background-color: #e2f1fb;
+            margin-left: auto;
+            padding: 5px;
+            border-radius: 10px 10px 0 10px;
+        }
+
+        .chat-input {
+            display: flex;
+            border-top: 1px solid #ccc;
+        }
+
+        .chat-input input {
+            flex: 1;
+            padding: 12px;
+            border: none;
+            font-size: 1em;
+        }
+
+        .chat-input button {
+            background: #002F5C;
+            color: #fff;
+            border: none;
+            padding: 10px;
+            cursor: pointer;
+            border-radius: 16px 0 16px 0;
+            /* margin: 5px; */
+            height: fit-content;
+            width: fit-content;
+            display: flex;
+            align-items: center;
+        }
+
+        .chat-input button:hover {
+            opacity: 0.9;
+        }
+
+
+
+
+
+        /* INDICATEUR DE FRAPPE */
+        #typing-indicator {
+            font-style: italic;
+            color: gray;
+            margin: 5px 0;
+            animation: blink 1s infinite;
+        }
+
+        @keyframes blink {
+
+            0%,
+            100% {
+                opacity: 0.3;
+            }
+
+            50% {
+                opacity: 1;
+            }
+        }
+
+        /* QWICK QST */
+        #quick-questions {
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: stretch;
+            gap: 8px;
+            box-sizing: border-box;
+            background: var(--gradient-background);
+            border-radius: 20px;
+            padding: 5px 0;
+        }
+
+        #quick-questions #slideToggleBtn svg {
+            transition: transform 1s ease;
+            transform: rotate(180deg);
+        }
+
+        #quick-questions.expand #slideToggleBtn svg {
+            transform: rotate(0deg);
+        }
+
+
+        #quick-questions button {
+            color: white;
+            display: flex;
+            flex-direction: row;
+            border: none;
+            align-items: center;
+        }
+
+        #quick-questions button#slideToggleBtn {
+            background-color: #ffffff22;
+            border-radius: 10px;
+            cursor: pointer;
+            justify-content: space-between;
+        }
+
+        #quick-questions .btn_container {
+            display: flex;
+            flex-direction: column;
+            align-items: stretch;
+            gap: 0;
+        }
+
+        #quick-questions .quick-btn {
+            opacity: 0.8;
+            background: transparent;
+            text-align: left;
+            padding: 10px 14px;
+            cursor: pointer;
+            transition: 0.3s;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.134);
+            border-radius: 0px;
+        }
+
+        #quick-questions .quick-btn:hover {
+            border-radius: 10px;
+            opacity: 1;
+            background: rgba(255, 255, 255, 0.134);
+            color: white;
+            border-color: transparent;
+
+        }
+
+
+
+
+
+        /* MESSAGES STYLES */
+        /* ==== STYLE DU CONTENU MARKDOWN DANS LE CHAT ==== */
+        .bot-message h1,
+        .bot-message h2,
+        .bot-message h3 {
+            color: #002F5C;
+            font-weight: 700;
+            margin-top: 10px;
+            margin-bottom: 6px;
+        }
+
+        .bot-message h1 {
+            font-size: 1.25em;
+        }
+
+        .bot-message h2 {
+            font-size: 1.15em;
+        }
+
+        .bot-message h3 {
+            font-size: 1.05em;
+        }
+
+        .bot-message p {
+            margin: 6px 0;
+        }
+
+        .bot-message strong {
+            color: #001E3C;
+            font-weight: 600;
+        }
+
+        .bot-message ul,
+        .bot-message ol {
+            margin: 8px 0 8px 18px;
+            padding: 0;
+        }
+
+        .bot-message li {
+            margin-bottom: 4px;
+            line-height: 1.4em;
+        }
+
+        .bot-message code {
+            background: #f4f4f4;
+            color: #c7254e;
+            padding: 2px 5px;
+            border-radius: 4px;
+            font-family: monospace;
+        }
+
+        .bot-message a {
+            color: #005bb5;
+            text-decoration: underline;
+        }
+
+        .bot-message a:hover {
+            color: #0078e7;
+        }
+
+        /* Petits séparateurs visuels */
+        .bot-message hr {
+            border: none;
+            border-top: 1px solid #ccc;
+            margin: 8px 0;
+        }

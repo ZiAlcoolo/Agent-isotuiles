@@ -8,160 +8,8 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
-    <style>
-        :root {
-            --gradient-background: linear-gradient(90deg, rgba(1, 46, 90, 1) 13%, rgba(1, 134, 196, 1) 86%);
-            --primary-color: #002F5C;
-        }
-
-        body {
-            font-family: 'Inter', sans-serif;
-            background: linear-gradient(90deg, rgba(1, 46, 90, 1) 13%, rgba(1, 134, 196, 1) 86%);
-            color: #fff;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: stretch;
-            min-height: 100vh;
-            margin: 0;
-            padding: 0 1.5rem;
-            gap: .5rem;
-        }
-
-        .btn{
-            background: var(--primary-color);
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 12px;
-            cursor: pointer;
-            transition: 0.3s;
-        }
-
-        .btn:hover {
-            background: #014a91;
-        }
-
-        .chat-container {
-            /* width: 90%; */
-            max-width: 800px;
-            min-height: 80vh;
-            background: #fff;
-            color: #000;
-            border-radius: 16px;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
-            display: flex;
-            flex-direction: column;
-            overflow: hidden;
-        }
-
-        .chat-header {
-            background: #002F5C;
-            color: white;
-            text-align: center;
-            padding: 15px;
-            font-size: 1.2em;
-            font-weight: 600;
-        }
-
-        .chat-box {
-            flex: 1;
-            padding: 20px;
-            overflow-y: auto;
-            position: relative;
-        }
-
-        .message {
-            margin-bottom: 12px;
-            line-height: 1.4;
-        }
-
-        .bot-message {
-            color: #002F5C;
-            font-weight: 500;
-        }
-
-        .user-message {
-            text-align: right;
-            color: #000;
-        }
-
-        .chat-input {
-            display: flex;
-            border-top: 1px solid #ccc;
-        }
-
-        .chat-input input {
-            flex: 1;
-            padding: 12px;
-            border: none;
-            font-size: 1em;
-        }
-
-        .chat-input button {
-            background: #002F5C;
-            color: #fff;
-            border: none;
-            padding: 12px 18px;
-            cursor: pointer;
-        }
-
-        .chat-input button:hover {
-            opacity: 0.9;
-        }
-
-
- 
-
-
-        /* INDICATEUR DE FRAPPE */
-        #typing-indicator {
-            font-style: italic;
-            color: gray;
-            margin: 5px 0;
-            animation: blink 1s infinite;
-        }
-
-        @keyframes blink {
-
-            0%,
-            100% {
-                opacity: 0.3;
-            }
-
-            50% {
-                opacity: 1;
-            }
-        }
-
-        /* QWICK QST */
-        #quick-questions {
-            position: absolute;
-            bottom: 20px;
-            right: 20px;
-            left: 20px;
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-            box-sizing: border-box;
-        }
-
-        .quick-btn {
-            background: white;
-            border: 1px solid var(--primary-color);
-            color: var(--primary-color);
-            border-radius: 20px;
-            padding: 8px 14px;
-            cursor: pointer;
-            transition: 0.3s;
-            color: var(--primary-color);
-        }
-
-        .quick-btn:hover {
-            background: var(--primary-color);
-            color: white;
-        }
-    </style>
+    <link rel="stylesheet" href="./styles.css">
+    
 </head>
 
 <body>
@@ -172,15 +20,33 @@
                 panneaux imitation tuiles et vous aider à créer un devis sur mesure. Comment puis-je vous aider
                 aujourd’hui ?</div>
             <div id="typing-indicator" style="display:none;">Agent Isotuiles écrit...</div>
-            <div id="quick-questions">
-                <button class="quick-btn">Quels modèles proposez-vous ?</button>
-                <button class="quick-btn">Quels sont vos délais de livraison ?</button>
-                <button class="quick-btn">Peut-on poser soi-même les panneaux ?</button>
-            </div>
         </div>
         <div class="chat-input">
             <input type="text" id="user-input" placeholder="Écrivez votre message...">
-            <button id="send-btn">Envoyer</button>
+            <button id="send-btn">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                    class="lucide lucide-send-icon lucide-send">
+                    <path
+                        d="M14.536 21.686a.5.5 0 0 0 .937-.024l6.5-19a.496.496 0 0 0-.635-.635l-19 6.5a.5.5 0 0 0-.024.937l7.93 3.18a2 2 0 0 1 1.112 1.11z" />
+                    <path d="m21.854 2.147-10.94 10.939" />
+                </svg>
+            </button>
+        </div>
+    </div>
+    <div id="quick-questions">
+        <button id="slideToggleBtn"
+            onclick="$('#quick-questions').toggleClass('expand');$('#quick-questions .btn_container').slideToggle()">
+            Questions fréquentes <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                class="lucide lucide-chevron-down-icon lucide-chevron-down">
+                <path d="m6 9 6 6 6-6" />
+            </svg>
+        </button>
+        <div class="btn_container">
+            <button class="quick-btn">Quels modèles proposez-vous ?</button>
+            <button class="quick-btn">Quels sont vos délais de livraison ?</button>
+            <button class="quick-btn">Peut-on poser soi-même les panneaux ?</button>
         </div>
     </div>
     <div id="product-suggestions"></div>
@@ -188,7 +54,7 @@
 
 
 
-    <button id="download-chat" class="btn">💾 Sauvegarder la conversation</button>
+    <button id="download-chat" class="btn" onclick="downloadChat()">💾 Sauvegarder la conversation</button>
 
     <div id="form-area"></div>
 
@@ -197,21 +63,31 @@
 
     <script>
 
+
+
         // Fonction effet de frappe
-        function typeWriterEffect(element, text, callback) {
-            let i = 0;
-            function type() {
-                if (i < text.length) {
-                    element.innerHTML += text.charAt(i);
-                    i++;
-                    const delay = 20 + Math.random() * 40; // vitesse de frappe aléatoire
-                    setTimeout(type, delay);
+        // Effet de frappe compatible avec du HTML (Markdown converti)
+        function typeWriterHTML(element, html, callback) {
+            const tempDiv = document.createElement("div");
+            tempDiv.innerHTML = html;
+            const nodes = Array.from(tempDiv.childNodes);
+            let index = 0;
+
+            function typeNextNode() {
+                if (index < nodes.length) {
+                    const node = nodes[index];
+                    element.appendChild(node.cloneNode(true));
+                    index++;
+                    const delay = 20 + Math.random() * 40;
+                    setTimeout(typeNextNode, delay);
                 } else if (callback) {
                     callback();
                 }
             }
-            type();
+
+            typeNextNode();
         }
+
 
 
 
@@ -220,21 +96,28 @@
             const msgElement = $('<div>').addClass('message').addClass(msgClass);
             $('#chat-box').append(msgElement);
 
+            // Enregistrement dans la mémoire de conversation
+            conversation.push({ role: sender === 'user' ? 'user' : 'assistant', content });
+
             if (sender === 'bot') {
                 $("#typing-indicator").show();
+
+                // Conversion du Markdown en HTML avant l'effet de frappe
+                const safeHTML = DOMPurify.sanitize(marked.parse(content));
+
+                // Effet de frappe progressif sur le HTML
                 setTimeout(() => {
-                    typeWriterEffect(msgElement[0], content, () => {
+                    typeWriterHTML(msgElement[0], safeHTML, () => {
                         $("#typing-indicator").hide();
                         $('#chat-box').scrollTop($('#chat-box')[0].scrollHeight);
                     });
-                }, 500 + Math.random() * 500); // petite latence avant la frappe
-            }
-            else {
-                // Sécurisation des entrées utilisateur (aucun HTML injecté)
+                }, 500 + Math.random() * 500);
+            } else {
                 msgElement.text(content);
                 $('#chat-box').scrollTop($('#chat-box')[0].scrollHeight);
             }
         }
+
 
 
         async function sendToOpenAI(message) {
@@ -285,22 +168,41 @@
             if (e.which === 13) $('#send-btn').click();
         });
 
-        $(".quick-btn").on("click", function () {
+        $(".quick-btn").on("click", async function () {
             const question = $(this).text();
-            sendMessage(question);
+
+            // Ajout du message utilisateur
+            appendMessage(question, 'user');
+
+            // Envoi à l'API OpenAI
+            const botReply = await sendToOpenAI(question);
+
+            // Affichage de la réponse
+            appendMessage(botReply, 'bot');
         });
 
 
-
+        // Tableau global pour stocker toute la conversation
+        let conversation = [];
 
         function downloadChat() {
-            const text = conversation.map(m => `${m.role === 'user' ? 'Client' : 'Isotuiles'}: ${m.content}`).join("\n\n");
+            if (!conversation.length) {
+                alert("Aucune conversation à sauvegarder.");
+                return;
+            }
+
+            const text = conversation
+                .map(m => `${m.role === 'user' ? 'Client' : 'Isotuiles'} : ${m.content}`)
+                .join("\n\n");
+
             const blob = new Blob([text], { type: "text/plain" });
             const url = URL.createObjectURL(blob);
             const a = document.createElement("a");
             a.href = url;
-            a.download = "conversation-isotuiles.txt";
+            a.download = `conversation-isotuiles-${new Date().toISOString().slice(0, 10)}.txt`;
+            document.body.appendChild(a);
             a.click();
+            document.body.removeChild(a);
         }
 
 
@@ -360,6 +262,8 @@ Contactez un commercial à isotuiles@gmail.com
 
 
     </script>
+    <script type="module" src="https://cdn.jsdelivr.net/npm/dompurify@3.0.6/dist/purify.min.js"></script>
+
 </body>
 
 </html>
