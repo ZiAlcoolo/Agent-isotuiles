@@ -15,6 +15,10 @@
             margin: 0;
             padding: 1.5rem;
             gap: .5rem;
+            max-width: 800px;
+            width: 100%;
+            margin: auto;
+            box-sizing: border-box;
         }
 
         .btn {
@@ -32,6 +36,7 @@
         }
 
         .chat-container {
+            margin: auto;
             /* width: 90%; */
             max-width: 800px;
             height: 80vh;
@@ -83,7 +88,7 @@
 
         .chat-input {
             display: flex;
-            border-top: 1px solid #ccc;
+            border-top: 1px solid #f7f2f2;
         }
 
         .chat-input input {
@@ -145,7 +150,6 @@
             box-sizing: border-box;
             background: var(--gradient-background);
             border-radius: 20px;
-            padding: 5px 0;
         }
 
         #quick-questions #slideToggleBtn svg {
@@ -189,6 +193,9 @@
             transition: 0.3s;
             border-bottom: 1px solid rgba(255, 255, 255, 0.134);
             border-radius: 0px;
+        }
+        #quick-questions .quick-btn:last-child {
+            border: none;
         }
 
         #quick-questions .quick-btn:hover {
@@ -270,3 +277,14 @@
             border-top: 1px solid #ccc;
             margin: 8px 0;
         }
+
+
+
+
+        /* MOBILE VERSION ========================== */
+@media (max-width: 768px) {
+    body{
+        max-width: unset;
+    }
+
+}
